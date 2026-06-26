@@ -1,4 +1,4 @@
-"""Jugador del juego (humano o máquina) y su mano de cartas."""
+"""Jugador del juego (humano o maquina) y su mano de cartas."""
 
 from uno.modelos.carta import Carta
 
@@ -11,12 +11,12 @@ class Jugador:
         self.mano: list[Carta] = []
 
     def agregar_carta(self, carta: Carta | None):
-        """Añade una carta a la mano (ignora None, p. ej. mazo vacío)."""
+        """Anade una carta a la mano (ignora None, p. ej. mazo vacio)."""
         if carta:
             self.mano.append(carta)
 
     def jugar_carta(self, indice: int) -> Carta | None:
-        """Quita y devuelve la carta en `indice`, o None si es inválido."""
+        """Quita y devuelve la carta en `indice`, o None si es invalido."""
         if 0 <= indice < len(self.mano):
             return self.mano.pop(indice)
         return None
@@ -26,7 +26,7 @@ class Jugador:
         return len(self.mano)
 
     def mostrar_mano(self):
-        """Imprime la mano con índices para que el humano elija."""
+        """Imprime la mano con indices para que el humano elija."""
         print(f"Mano de {self.nombre}:")
         for i, carta in enumerate(self.mano):
             print(f"  [{i}] {carta}")

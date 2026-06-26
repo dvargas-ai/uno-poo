@@ -1,4 +1,4 @@
-"""Lógica central del juego UNO: turnos, reglas y efectos de las cartas."""
+"""Logica central del juego UNO: turnos, reglas y efectos de las cartas."""
 
 from uno.modelos.baraja import Baraja
 from uno.modelos.carta import Carta
@@ -7,12 +7,12 @@ from uno.persistencia.almacenamiento import borrar_partida, guardar_partida
 
 
 class JuegoUNO:
-    """Controla una partida entre el jugador humano y la máquina."""
+    """Controla una partida entre el jugador humano y la maquina."""
 
     def __init__(self):
         self.baraja = Baraja()
         self.jugador1 = Jugador("Jugador 1")
-        self.jugador2 = Jugador("Máquina")
+        self.jugador2 = Jugador("Maquina")
         self.carta_en_mesa: Carta | None = None
         self.color_actual: str = ""
         self.saltar_j1 = False
@@ -29,7 +29,7 @@ class JuegoUNO:
             self.jugador2.agregar_carta(self.baraja.robar())
 
     def _inicializar_mesa(self):
-        """Coloca la primera carta en la mesa (debe ser numérica)."""
+        """Coloca la primera carta en la mesa (debe ser numerica)."""
         while True:
             carta = self.baraja.robar()
             if carta and carta.es_numero():
@@ -39,7 +39,7 @@ class JuegoUNO:
                 break
 
     def _tiene_jugada(self, jugador: Jugador) -> bool:
-        """True si el jugador tiene al menos una carta válida para jugar."""
+        """True si el jugador tiene al menos una carta valida para jugar."""
         for carta in jugador.mano:
             if self._es_jugada_valida(carta):
                 return True
@@ -65,11 +65,11 @@ class JuegoUNO:
             if self.jugador1.tamano_mano() == 0 or self.jugador2.tamano_mano() == 0:
                 break
 
-            print("\n--- TURNO MÁQUINA ---\n")
+            print("\n--- TURNO MAQUINA ---\n")
 
-            # Turno de la máquina
+            # Turno de la maquina
             if self.saltar_j2:
-                print("La máquina pierde turno.")
+                print("La maquina pierde turno.")
                 self.saltar_j2 = False
             else:
                 terminado = self._turno_maquina(self.jugador2)
@@ -89,7 +89,7 @@ class JuegoUNO:
         print()
         self.jugador1.mostrar_mano()
         print()
-        print("Mano de la máquina:")
+        print("Mano de la maquina:")
         for c in self.jugador2.mano:
             print(c, end="  ")
         print()
@@ -112,22 +112,22 @@ class JuegoUNO:
                 return not cima_es_comodin
 
     def _turno_humano(self, jugador: Jugador) -> bool:
-        """Gestiona el turno del humano. Devuelve True si ganó."""
+        """Gestiona el turno del humano. Devuelve True si gano."""
         if not self._tiene_jugada(jugador):
-            print("No tienes carta válida. Robas y pierdes turno.")
+            print("No tienes carta valida. Robas y pierdes turno.")
             jugador.agregar_carta(self.baraja.robar())
             return False
 
         while True:
             try:
-                i = int(input("Índice de carta a jugar: "))
+                i = int(input("Indice de carta a jugar: "))
                 carta = jugador.mano[i]
                 if not self._es_jugada_valida(carta):
-                    print("Carta inválida.")
+                    print("Carta invalida.")
                     continue
                 break
             except (ValueError, IndexError):
-                print("Entrada inválida.")
+                print("Entrada invalida.")
 
         jugada = jugador.jugar_carta(i)
         print(f"Juegas {jugada}")
@@ -139,19 +139,19 @@ class JuegoUNO:
         return jugador.tamano_mano() == 0
 
     def _turno_maquina(self, jugador: Jugador) -> bool:
-        """Gestiona el turno de la máquina. Devuelve True si ganó."""
+        """Gestiona el turno de la maquina. Devuelve True si gano."""
         for i, c in enumerate(jugador.mano):
             if self._es_jugada_valida(c):
                 jugada = jugador.jugar_carta(i)
-                print(f"Máquina juega {jugada}")
+                print(f"Maquina juega {jugada}")
                 self._procesar_jugada(jugada, jugador)
                 break
         else:
-            print("Máquina roba carta.")
+            print("Maquina roba carta.")
             jugador.agregar_carta(self.baraja.robar())
 
         if jugador.tamano_mano() == 1:
-            print("UNO!!! (Máquina)")
+            print("UNO!!! (Maquina)")
 
         return jugador.tamano_mano() == 0
 
@@ -165,14 +165,14 @@ class JuegoUNO:
                 self.color_actual = self._pedir_color()
             else:
                 self.color_actual = self._color_maquina()
-                print("Máquina cambia color a:", self.color_actual)
+                print("Maquina cambia color a:", self.color_actual)
         else:
             self.color_actual = carta.color
 
         self._aplicar_efecto(carta, jugador)
 
     def _aplicar_efecto(self, carta: Carta, jugador: Jugador):
-        """Aplica el efecto de saltar/robar según el valor de la carta."""
+        """Aplica el efecto de saltar/robar segun el valor de la carta."""
         otro = self.jugador2 if jugador == self.jugador1 else self.jugador1
         v = carta.valor
 
@@ -201,14 +201,14 @@ class JuegoUNO:
                 self.saltar_j1 = True
 
     def _pedir_color(self) -> str:
-        """Pide al humano elegir un color tras jugar un comodín."""
+        """Pide al humano elegir un color tras jugar un comodin."""
         while True:
             c = input("Elige color (R,A,V,Z): ").upper()
             if c in ["R", "A", "V", "Z"]:
                 return c
 
     def _color_maquina(self) -> str:
-        """La máquina elige el color del que más cartas tiene."""
+        """La maquina elige el color del que mas cartas tiene."""
         conteo = {"R": 0, "A": 0, "V": 0, "Z": 0}
         for c in self.jugador2.mano:
             if c.color in conteo:
@@ -219,8 +219,8 @@ class JuegoUNO:
         """Anuncia al ganador y borra la partida guardada."""
         print("\n=== FIN DEL JUEGO ===")
         if self.jugador1.tamano_mano() == 0:
-            print("GANASTE 🎉")
+            print("GANASTE")
         else:
-            print("GANA LA MÁQUINA 🤖")
+            print("GANA LA MAQUINA")
 
         borrar_partida()

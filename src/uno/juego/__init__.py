@@ -1,1 +1,1 @@
-"""Lógica y control del juego."""
+"""Logica y control del juego."""

@@ -1,13 +1,13 @@
-"""Guardado y recuperación de la partida mediante serialización (pickle).
+"""Guardado y recuperacion de la partida mediante serializacion (pickle).
 
-Esta es la funcionalidad principal añadida al proyecto: permite guardar el
-estado completo del juego en disco y continuarlo más tarde.
+Esta es la funcionalidad principal anadida al proyecto: permite guardar el
+estado completo del juego en disco y continuarlo mas tarde.
 """
 
 import pickle
 from pathlib import Path
 
-# Ruta raíz del proyecto: src/uno/persistencia/almacenamiento.py -> sube 3 niveles
+# Ruta raiz del proyecto: src/uno/persistencia/almacenamiento.py -> sube 3 niveles
 _RAIZ = Path(__file__).resolve().parents[3]
 ARCHIVO = _RAIZ / "partida.dat"
 

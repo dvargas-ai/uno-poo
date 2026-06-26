@@ -9,13 +9,13 @@ from uno.persistencia.almacenamiento import cargar_partida, existe_partida
 
 def main():
     if existe_partida():
-        op = input("Hay partida guardada. ¿Continuar? (S/N): ").strip().upper()
+        op = input("Hay partida guardada. Continuar? (S/N): ").strip().upper()
         if op == "S":
             juego = cargar_partida()
             if juego is not None:
                 juego.jugar()
                 return
-            print("No se pudo cargar la partida. Se iniciará una nueva.")
+            print("No se pudo cargar la partida. Se iniciara una nueva.")
 
     juego = JuegoUNO()
     juego.jugar()

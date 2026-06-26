@@ -1,4 +1,4 @@
-"""Mazo de cartas: creación, mezcla y robo."""
+"""Mazo de cartas: creacion, mezcla y robo."""
 
 import random
 
@@ -19,7 +19,7 @@ class Baraja:
         comodines_color = ["^", "&", "+2", "+4"]
         comodines_negro = ["+2", "+4", "%"]
 
-        # Cartas numéricas (0-9 por color)
+        # Cartas numericas (0-9 por color)
         for c in colores:
             for i in range(10):
                 self.cartas.append(Carta(c, str(i)))
@@ -40,7 +40,7 @@ class Baraja:
         return len(self.cartas) == 0
 
     def robar(self) -> Carta | None:
-        """Saca y devuelve la carta superior, o None si el mazo está vacío."""
+        """Saca y devuelve la carta superior, o None si el mazo esta vacio."""
         if self.esta_vacia():
             return None
         return self.cartas.pop(0)
@@ -50,5 +50,5 @@ class Baraja:
         return len(self.cartas)
 
     def mostrar(self):
-        """Imprime todas las cartas del mazo (uso de depuración)."""
+        """Imprime todas las cartas del mazo (uso de depuracion)."""
         print(" ".join(str(c) for c in self.cartas))
