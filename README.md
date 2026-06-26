@@ -1,9 +1,14 @@
-# UNO Game in Python (OOP)
+# UNO Game — Java & Python (OOP)
 
-Console implementation of the classic **UNO** card game, developed as the
-**2nd midterm project for the Object-Oriented Programming course**. The code was
-migrated from Java to Python and extended with the ability to **save and resume
-a game** through serialization.
+Console implementation of the classic **UNO** card game, built for the
+**Object-Oriented Programming** course across two midterms:
+
+- **1st midterm — Java:** the original object-oriented implementation.
+- **2nd midterm — Python:** the same game migrated to Python, **plus a new
+  save/resume feature**.
+
+This repository keeps **both versions side by side** so the evolution from Java
+to Python can be followed end to end.
 
 ## Team
 
@@ -13,12 +18,54 @@ a game** through serialization.
 
 **Course:** Object-Oriented Programming
 
+## Repository layout
+
+```
+.
+├── README.md
+├── .gitignore
+├── java-version/       # 1st midterm — Java (no save feature)
+│   ├── README.md
+│   └── src/uno/
+│       ├── Main.java
+│       ├── models/{Card,Deck,Player}.java
+│       └── game/UnoGame.java
+└── python-version/     # 2nd midterm — Python (adds save/resume)
+    ├── README.md
+    ├── run.py
+    ├── docs/STRUCTURE.md
+    └── src/uno/
+        ├── main.py
+        ├── models/{card,deck,player}.py
+        ├── game/uno_game.py
+        └── persistence/storage.py
+```
+
+## The two versions
+
+| Version  | Midterm | Language | Save/resume        |
+|----------|---------|----------|--------------------|
+| Java     | 1st     | Java 17+ | No                 |
+| Python   | 2nd     | Python 3.10+ | Yes (`pickle`) |
+
+Both share the **same object-oriented design** (`Card`, `Deck`, `Player`,
+`UnoGame`) and the same rules. The Python version adds a `persistence` module
+that serializes the game after each turn, so a game can be continued later.
+
 ## Run
 
-Requires **Python 3.10 or higher** (no external dependencies, only the standard
-library).
+### Java version (1st midterm)
 
 ```bash
+cd java-version
+javac -d out src/uno/Main.java src/uno/models/*.java src/uno/game/*.java
+java -cp out uno.Main
+```
+
+### Python version (2nd midterm)
+
+```bash
+cd python-version
 python run.py
 ```
 
@@ -45,85 +92,49 @@ python run.py
 
 Colors: **R** (red), **Y** (yellow), **G** (green), **B** (blue), **W** (black/wild).
 
-## Saving the game
-
-The game is saved **automatically** after every turn to a `savegame.dat` file
-using the `pickle` module. When the game starts, if a saved game exists, you are
-offered to resume it. When the game ends, the file is deleted automatically.
-
-## Project structure
-
-```
-.
-├── run.py                  # Entry point (python run.py)
-├── README.md
-├── .gitignore
-├── docs/
-│   └── STRUCTURE.md        # Object-oriented design explanation
-└── src/
-    └── uno/
-        ├── main.py         # Start menu: new game or resume
-        ├── models/         # Domain entities
-        │   ├── card.py
-        │   ├── deck.py
-        │   └── player.py
-        ├── game/           # Game logic and rules
-        │   └── uno_game.py
-        └── persistence/    # Game saving and loading
-            └── storage.py
-```
-
-## OOP concepts applied
-
-- **Encapsulation:** each class manages its own state (the `Player`'s hand, the
-  `Deck`'s cards).
-- **Abstraction:** `Card`, `Deck` and `Player` model real game entities with
-  clear methods.
-- **Composition:** `UnoGame` is composed of one `Deck` and two `Player` objects.
-- **Separation of concerns:** models, game logic and persistence live in
-  separate packages.
-
 ## Class diagram (UML)
+
+The design is identical in both languages.
 
 ```mermaid
 classDiagram
     class Card {
-        +str color
-        +str value
-        +is_number() bool
-        +is_wild() bool
-        +__str__() str
+        +String color
+        +String value
+        +isNumber() bool
+        +isWild() bool
+        +toString() String
     }
 
     class Deck {
-        -list~Card~ cards
+        -List~Card~ cards
         +draw() Card
-        +is_empty() bool
+        +isEmpty() bool
         +size() int
         +show()
     }
 
     class Player {
-        +str name
-        -list~Card~ hand
-        +add_card(card)
-        +play_card(index) Card
-        +hand_size() int
-        +show_hand()
+        +String name
+        -List~Card~ hand
+        +addCard(card)
+        +playCard(index) Card
+        +handSize() int
+        +showHand()
     }
 
     class UnoGame {
         -Deck deck
         -Player player1
         -Player player2
-        -Card table_card
-        -str current_color
+        -Card tableCard
+        -String currentColor
         +play()
-        -_deal_cards()
-        -_is_valid_play(card) bool
-        -_human_turn(player) bool
-        -_computer_turn(player) bool
-        -_apply_effect(card, player)
+        -dealCards()
+        -isValidPlay(card) bool
+        -humanTurn(player) bool
+        -computerTurn(player) bool
+        -applyEffect(card, player)
     }
 
     UnoGame "1" *-- "1" Deck : composes
@@ -136,21 +147,30 @@ classDiagram
 
 ## From Java to Python
 
-This project was migrated from an original **Java** implementation. These are
-the main differences applied during the conversion:
+These are the main differences applied during the migration (2nd midterm):
 
-| Concept                 | Java                                    | Python (this project)                   |
-|-------------------------|-----------------------------------------|-----------------------------------------|
-| Class definition        | `public class Card { ... }`             | `class Card:`                           |
-| Fields + getters/setters | Private fields + `getX()` methods      | Direct attributes / `@dataclass`        |
-| Constructor             | `public Card(String color) { ... }`     | `def __init__(self, color):`            |
-| Typing                  | Static and mandatory (`String color`)   | Dynamic, with optional type hints       |
-| Lists                   | `ArrayList<Card>`                       | `list[Card]`                            |
-| Instance reference      | `this`                                  | `self` (explicit in every method)       |
-| Serialization (saving)  | `Serializable` + `ObjectOutputStream`   | `pickle` module                         |
-| Entry point             | `public static void main(String[])`     | `if __name__ == "__main__":`            |
-| Printing                | `System.out.println(...)`               | `print(...)`                            |
+| Concept                  | Java                                    | Python                                  |
+|--------------------------|-----------------------------------------|-----------------------------------------|
+| Class definition         | `public class Card { ... }`             | `class Card:`                           |
+| Fields + getters/setters | Private fields + `getX()` methods       | Direct attributes / `@dataclass`        |
+| Constructor              | `public Card(String color) { ... }`     | `def __init__(self, color):`            |
+| Typing                   | Static and mandatory (`String color`)   | Dynamic, with optional type hints       |
+| Lists                    | `ArrayList<Card>`                       | `list[Card]`                            |
+| Instance reference       | `this`                                  | `self` (explicit in every method)       |
+| Console input            | `Scanner.nextLine()`                    | `input()`                               |
+| Serialization (saving)   | (not implemented in 1st midterm)        | `pickle` module                         |
+| Entry point              | `public static void main(String[])`     | `if __name__ == "__main__":`            |
+| Printing                 | `System.out.println(...)`               | `print(...)`                            |
 
-**The added feature** over the original was **saving and resuming a game**
-(`src/uno/persistence/storage.py`), which in Java would use `Serializable` and
-in Python was solved with `pickle`.
+**The feature added in the Python version** was **saving and resuming a game**
+(`python-version/src/uno/persistence/storage.py`), implemented with `pickle`.
+
+## OOP concepts applied
+
+- **Encapsulation:** each class manages its own state (the `Player`'s hand, the
+  `Deck`'s cards).
+- **Abstraction:** `Card`, `Deck` and `Player` model real game entities with
+  clear methods.
+- **Composition:** `UnoGame` is composed of one `Deck` and two `Player` objects.
+- **Separation of concerns:** models, game logic and (in Python) persistence
+  live in separate packages.

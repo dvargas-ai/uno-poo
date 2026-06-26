@@ -7,6 +7,12 @@ __pycache__/
 savegame.dat
 partida.dat
 
+# Java compiled output
+*.class
+java-version/out/
+out/
+bin/
+
 # Virtual environments
 .venv/
 venv/
