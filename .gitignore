@@ -1,0 +1,21 @@
+# Bytecode de Python
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Partida guardada (estado local, no debe versionarse)
+partida.dat
+
+# Entornos virtuales
+.venv/
+venv/
+env/
+
+# Configuración de editores / IDE
+.vscode/
+.idea/
+.claude/
+
+# Sistema operativo
+.DS_Store
+Thumbs.db
