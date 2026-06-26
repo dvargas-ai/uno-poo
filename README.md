@@ -58,7 +58,7 @@ that serializes the game after each turn, so a game can be continued later.
 
 ```bash
 cd java-version
-javac -d out src/uno/Main.java src/uno/models/*.java src/uno/game/*.java
+javac -d out -sourcepath src src/uno/Main.java
 java -cp out uno.Main
 ```
 
@@ -68,6 +68,11 @@ java -cp out uno.Main
 cd python-version
 python run.py
 ```
+
+> **VS Code "Run" button:** this repo ships a `.vscode/settings.json` that
+> configures the *Code Runner* extension so the Run button compiles and runs
+> each version correctly. If you run files by hand, use the commands above
+> (do **not** run `main.py` / `Main.java` in isolation).
 
 ## How to play
 

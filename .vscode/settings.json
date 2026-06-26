@@ -1,0 +1,13 @@
+{
+  "//": "Makes the Code Runner 'Run' button work for this packaged project.",
+  "//java": "Compiles the whole uno package (via -sourcepath) and runs uno.Main.",
+  "//python": "Runs the launcher so the 'uno' package is importable.",
+  "code-runner.executorMap": {
+    "java": "cd /d \"$workspaceRoot\\java-version\" && javac -d out -sourcepath src src/uno/Main.java && java -cp out uno.Main",
+    "python": "cd /d \"$workspaceRoot\\python-version\" && python run.py"
+  },
+  "code-runner.runInTerminal": true,
+  "code-runner.clearPreviousOutput": true,
+  "//terminal": "Use cmd so the && command chain and keyboard input both work.",
+  "terminal.integrated.defaultProfile.windows": "Command Prompt"
+}

@@ -13,10 +13,16 @@ and the Java → Python comparison.
 
 ## Compile and run
 
+From the `java-version/` folder:
+
 ```bash
-javac -d out src/uno/Main.java src/uno/models/*.java src/uno/game/*.java
+javac -d out -sourcepath src src/uno/Main.java
 java -cp out uno.Main
 ```
+
+`-sourcepath src` lets the compiler find and build every class in the `uno`
+package automatically. Do **not** compile `Main.java` on its own — it depends on
+the other classes.
 
 ## Structure
 

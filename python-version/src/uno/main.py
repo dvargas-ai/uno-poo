@@ -3,6 +3,13 @@
 Offers to resume a saved game or start a new one.
 """
 
+import os
+import sys
+
+# Allow running this file directly (e.g. the editor's "Run" button) by making
+# the src/ folder importable. Running it through ../../run.py also works.
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
 from uno.game.uno_game import UnoGame
 from uno.persistence.storage import game_exists, load_game
 

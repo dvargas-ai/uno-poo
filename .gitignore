@@ -19,7 +19,8 @@ venv/
 env/
 
 # Editor / IDE config
-.vscode/
+.vscode/*
+!.vscode/settings.json
 .idea/
 .claude/
 
