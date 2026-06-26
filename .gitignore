@@ -1,21 +1,22 @@
-# Bytecode de Python
+# Python bytecode
 __pycache__/
 *.py[cod]
 *$py.class
 
-# Partida guardada (estado local, no debe versionarse)
+# Saved game (local state, must not be versioned)
+savegame.dat
 partida.dat
 
-# Entornos virtuales
+# Virtual environments
 .venv/
 venv/
 env/
 
-# Configuración de editores / IDE
+# Editor / IDE config
 .vscode/
 .idea/
 .claude/
 
-# Sistema operativo
+# Operating system
 .DS_Store
 Thumbs.db

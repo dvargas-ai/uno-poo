@@ -1,157 +1,156 @@
-# 🎴 Juego UNO en Python (POO)
+# UNO Game in Python (OOP)
 
-Implementación por consola del clásico juego **UNO**, desarrollada como proyecto
-del **2do Parcial de Programación Orientada a Objetos**. El código fue migrado
-desde Java a Python y se le añadió la funcionalidad de **guardar y continuar
-partida** mediante serialización.
+Console implementation of the classic **UNO** card game, developed as the
+**2nd midterm project for the Object-Oriented Programming course**. The code was
+migrated from Java to Python and extended with the ability to **save and resume
+a game** through serialization.
 
-## 👥 Integrantes
+## Team
 
 - Aaron Lopez
-- Damián Vargas
+- Damian Vargas
 - Francisco Quezada
 
-**Materia:** Programación Orientada a Objetos
+**Course:** Object-Oriented Programming
 
-## 🚀 Ejecución
+## Run
 
-Requiere **Python 3.10 o superior** (no usa dependencias externas, solo la
-librería estándar).
+Requires **Python 3.10 or higher** (no external dependencies, only the standard
+library).
 
 ```bash
 python run.py
 ```
 
-## 🎮 Cómo jugar
+## How to play
 
-- Juegas contra la **máquina**. Cada jugador empieza con **7 cartas**.
-- En tu turno se muestra tu mano numerada; escribe el **índice** de la carta
-  que quieres jugar.
-- Una carta es válida si **coincide en color o en número/símbolo** con la carta
-  de la mesa.
-- Si no tienes jugada válida, robas una carta y pierdes el turno.
-- Gana quien se quede **sin cartas**.
+- You play against the **computer**. Each player starts with **7 cards**.
+- On your turn your hand is shown numbered; type the **index** of the card you
+  want to play.
+- A card is valid if it **matches the color or the number/symbol** of the card
+  on the table.
+- If you have no valid play, you draw a card and lose your turn.
+- The first player to run **out of cards** wins.
 
-### Cartas
+### Cards
 
-| Símbolo | Significado            |
+| Symbol  | Meaning                |
 |---------|------------------------|
-| `0`-`9` | Carta numérica         |
-| `^`     | Saltar turno           |
-| `&`     | Reversa                |
-| `%`     | Cambio de color        |
-| `+2`    | El rival roba 2        |
-| `+4`    | El rival roba 4        |
+| `0`-`9` | Number card            |
+| `^`     | Skip turn              |
+| `&`     | Reverse                |
+| `%`     | Color change           |
+| `+2`    | Opponent draws 2       |
+| `+4`    | Opponent draws 4       |
 
-Colores: **R** (rojo), **A** (amarillo), **V** (verde), **Z** (azul), **N** (negro/comodín).
+Colors: **R** (red), **Y** (yellow), **G** (green), **B** (blue), **W** (black/wild).
 
-## 💾 Guardar partida
+## Saving the game
 
-La partida se guarda **automáticamente** después de cada turno en un archivo
-`partida.dat` usando el módulo `pickle`. Al iniciar el juego, si existe una
-partida guardada, se ofrece continuarla. Al terminar la partida, el archivo se
-elimina automáticamente.
+The game is saved **automatically** after every turn to a `savegame.dat` file
+using the `pickle` module. When the game starts, if a saved game exists, you are
+offered to resume it. When the game ends, the file is deleted automatically.
 
-## 📁 Estructura del proyecto
+## Project structure
 
 ```
 .
-├── run.py                  # Punto de entrada (python run.py)
+├── run.py                  # Entry point (python run.py)
 ├── README.md
 ├── .gitignore
 ├── docs/
-│   └── ESTRUCTURA.md       # Explicación del diseño orientado a objetos
+│   └── STRUCTURE.md        # Object-oriented design explanation
 └── src/
     └── uno/
-        ├── main.py         # Menú inicial: nueva partida o continuar
-        ├── modelos/        # Entidades del dominio
-        │   ├── carta.py
-        │   ├── baraja.py
-        │   └── jugador.py
-        ├── juego/          # Lógica y reglas del juego
-        │   └── juego_uno.py
-        └── persistencia/   # Guardado y carga de la partida
-            └── almacenamiento.py
+        ├── main.py         # Start menu: new game or resume
+        ├── models/         # Domain entities
+        │   ├── card.py
+        │   ├── deck.py
+        │   └── player.py
+        ├── game/           # Game logic and rules
+        │   └── uno_game.py
+        └── persistence/    # Game saving and loading
+            └── storage.py
 ```
 
-## 🧩 Conceptos de POO aplicados
+## OOP concepts applied
 
-- **Encapsulamiento:** cada clase administra su propio estado (la mano del
-  `Jugador`, las cartas de la `Baraja`).
-- **Abstracción:** la `Carta`, la `Baraja` y el `Jugador` modelan entidades
-  reales del juego con métodos claros.
-- **Composición:** `JuegoUNO` está compuesto por una `Baraja` y dos `Jugador`.
-- **Separación de responsabilidades:** modelos, lógica del juego y persistencia
-  están en paquetes distintos.
+- **Encapsulation:** each class manages its own state (the `Player`'s hand, the
+  `Deck`'s cards).
+- **Abstraction:** `Card`, `Deck` and `Player` model real game entities with
+  clear methods.
+- **Composition:** `UnoGame` is composed of one `Deck` and two `Player` objects.
+- **Separation of concerns:** models, game logic and persistence live in
+  separate packages.
 
-## 📊 Diagrama de clases (UML)
+## Class diagram (UML)
 
 ```mermaid
 classDiagram
-    class Carta {
+    class Card {
         +str color
-        +str valor
-        +es_numero() bool
-        +es_comodin() bool
+        +str value
+        +is_number() bool
+        +is_wild() bool
         +__str__() str
     }
 
-    class Baraja {
-        -list~Carta~ cartas
-        +robar() Carta
-        +esta_vacia() bool
-        +tamano() int
-        +mostrar()
+    class Deck {
+        -list~Card~ cards
+        +draw() Card
+        +is_empty() bool
+        +size() int
+        +show()
     }
 
-    class Jugador {
-        +str nombre
-        -list~Carta~ mano
-        +agregar_carta(carta)
-        +jugar_carta(indice) Carta
-        +tamano_mano() int
-        +mostrar_mano()
+    class Player {
+        +str name
+        -list~Card~ hand
+        +add_card(card)
+        +play_card(index) Card
+        +hand_size() int
+        +show_hand()
     }
 
-    class JuegoUNO {
-        -Baraja baraja
-        -Jugador jugador1
-        -Jugador jugador2
-        -Carta carta_en_mesa
-        -str color_actual
-        +jugar()
-        -_repartir_cartas()
-        -_es_jugada_valida(carta) bool
-        -_turno_humano(jugador) bool
-        -_turno_maquina(jugador) bool
-        -_aplicar_efecto(carta, jugador)
+    class UnoGame {
+        -Deck deck
+        -Player player1
+        -Player player2
+        -Card table_card
+        -str current_color
+        +play()
+        -_deal_cards()
+        -_is_valid_play(card) bool
+        -_human_turn(player) bool
+        -_computer_turn(player) bool
+        -_apply_effect(card, player)
     }
 
-    JuegoUNO "1" *-- "1" Baraja : compone
-    JuegoUNO "1" *-- "2" Jugador : compone
-    Baraja "1" o-- "*" Carta : contiene
-    Jugador "1" o-- "*" Carta : mano
+    UnoGame "1" *-- "1" Deck : composes
+    UnoGame "1" *-- "2" Player : composes
+    Deck "1" o-- "*" Card : holds
+    Player "1" o-- "*" Card : hand
 ```
 
-> GitHub renderiza este diagrama automáticamente al ver el README.
+> GitHub renders this diagram automatically when viewing the README.
 
-## 🔄 De Java a Python
+## From Java to Python
 
-Este proyecto se migró desde una implementación original en **Java**. Estas son
-las principales diferencias que aplicamos durante la conversión:
+This project was migrated from an original **Java** implementation. These are
+the main differences applied during the conversion:
 
-| Concepto                | Java                                    | Python (este proyecto)                  |
+| Concept                 | Java                                    | Python (this project)                   |
 |-------------------------|-----------------------------------------|-----------------------------------------|
-| Definición de clase     | `public class Carta { ... }`            | `class Carta:`                          |
-| Atributos + getters/setters | Campos privados + métodos `getX()`  | Atributos directos / `@dataclass`       |
-| Constructor             | `public Carta(String color) { ... }`    | `def __init__(self, color):`            |
-| Tipado                  | Estático y obligatorio (`String color`) | Dinámico, con *type hints* opcionales   |
-| Listas                  | `ArrayList<Carta>`                      | `list[Carta]`                           |
-| Referencia a instancia  | `this`                                  | `self` (explícito en cada método)       |
-| Serialización (guardar) | `Serializable` + `ObjectOutputStream`   | módulo `pickle`                         |
-| Punto de entrada        | `public static void main(String[])`     | `if __name__ == "__main__":`            |
-| Impresión               | `System.out.println(...)`               | `print(...)`                            |
+| Class definition        | `public class Card { ... }`             | `class Card:`                           |
+| Fields + getters/setters | Private fields + `getX()` methods      | Direct attributes / `@dataclass`        |
+| Constructor             | `public Card(String color) { ... }`     | `def __init__(self, color):`            |
+| Typing                  | Static and mandatory (`String color`)   | Dynamic, with optional type hints       |
+| Lists                   | `ArrayList<Card>`                       | `list[Card]`                            |
+| Instance reference      | `this`                                  | `self` (explicit in every method)       |
+| Serialization (saving)  | `Serializable` + `ObjectOutputStream`   | `pickle` module                         |
+| Entry point             | `public static void main(String[])`     | `if __name__ == "__main__":`            |
+| Printing                | `System.out.println(...)`               | `print(...)`                            |
 
-**La funcionalidad añadida** respecto al original fue **guardar y continuar
-partida** (`src/uno/persistencia/almacenamiento.py`), que en Java se haría con
-`Serializable` y en Python se resolvió con `pickle`.
+**The added feature** over the original was **saving and resuming a game**
+(`src/uno/persistence/storage.py`), which in Java would use `Serializable` and
+in Python was solved with `pickle`.

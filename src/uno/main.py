@@ -1,24 +1,24 @@
-"""Punto de entrada del juego UNO.
+"""Entry point of the UNO game.
 
-Ofrece continuar una partida guardada o iniciar una nueva.
+Offers to resume a saved game or start a new one.
 """
 
-from uno.juego.juego_uno import JuegoUNO
-from uno.persistencia.almacenamiento import cargar_partida, existe_partida
+from uno.game.uno_game import UnoGame
+from uno.persistence.storage import game_exists, load_game
 
 
 def main():
-    if existe_partida():
-        op = input("Hay partida guardada. Continuar? (S/N): ").strip().upper()
-        if op == "S":
-            juego = cargar_partida()
-            if juego is not None:
-                juego.jugar()
+    if game_exists():
+        choice = input("There is a saved game. Continue? (Y/N): ").strip().upper()
+        if choice == "Y":
+            game = load_game()
+            if game is not None:
+                game.play()
                 return
-            print("No se pudo cargar la partida. Se iniciara una nueva.")
+            print("The saved game could not be loaded. A new one will start.")
 
-    juego = JuegoUNO()
-    juego.jugar()
+    game = UnoGame()
+    game.play()
 
 
 if __name__ == "__main__":

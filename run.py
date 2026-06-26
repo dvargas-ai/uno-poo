@@ -1,6 +1,6 @@
-"""Lanzador del juego UNO.
+"""UNO game launcher.
 
-Ejecuta el juego sin necesidad de instalar el paquete:
+Run the game without installing the package:
 
     python run.py
 """
@@ -8,7 +8,7 @@ Ejecuta el juego sin necesidad de instalar el paquete:
 import os
 import sys
 
-# Permite importar el paquete `uno` desde la carpeta src/
+# Allow importing the `uno` package from the src/ folder
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "src"))
 
 from uno.main import main
